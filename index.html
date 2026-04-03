@@ -15,8 +15,8 @@
       --border:   #252729;
       --text:     #e8e6e1;
       --muted:    #7a7873;
-      --accent:   #d4894a;   /* warm rust/amber */
-      --accent2:  #5c8fa8;   /* slate blue */
+      --accent:   #d4894a;
+      --accent2:  #5c8fa8;
       --mono:     'DM Mono', monospace;
       --display:  'Syne', sans-serif;
       --body:     'DM Sans', sans-serif;
@@ -77,7 +77,7 @@
       transform: translateY(28px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    body.loaded section { opacity: 0; }
+    /* FIX: removed conflicting body.loaded section { opacity: 0 } rule */
     section.visible { opacity: 1; transform: none; }
  
     /* ── HERO ── */
@@ -500,9 +500,15 @@
     <span>built by victor bender · 2025</span>
   </footer>
  
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    // Fade-in sections on scroll
+  <script>
+    // FIX 1: Removed body.loaded section { opacity: 0 } CSS rule that was overriding section.visible
+    // FIX 2: Completed the IntersectionObserver setup — actually observe each section
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.15 }
     );
+
+    document.querySelectorAll('section').forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>

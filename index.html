@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Victor Bender</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --bg:       #0d0e0f;
+      --surface:  #161819;
+      --border:   #252729;
+      --text:     #e8e6e1;
+      --muted:    #7a7873;
+      --accent:   #d4894a;   /* warm rust/amber */
+      --accent2:  #5c8fa8;   /* slate blue */
+      --mono:     'DM Mono', monospace;
+      --display:  'Syne', sans-serif;
+      --body:     'DM Sans', sans-serif;
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+ 
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 3rem;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,14,15,0.85);
+      backdrop-filter: blur(12px);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+ 
+    /* ── SECTIONS ── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 7rem 2rem;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    body.loaded section { opacity: 0; }
+    section.visible { opacity: 1; transform: none; }
+ 
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: 6rem;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    h1 {
+      font-family: var(--display);
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+    }
+    h1 span { color: var(--accent); }
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-ghost:hover { border-color: var(--muted); color: var(--text); }
+ 
+    /* ── SECTION HEADINGS ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    h2 {
+      font-family: var(--display);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 2.5rem;
+      line-height: 1.1;
+    }
+ 
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-text p + p { margin-top: 1rem; }
+    .about-facts {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.8rem;
+    }
+    .fact {
+      display: flex;
+      flex-direction: column;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .fact:last-child { border-bottom: none; }
+    .fact-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.2rem;
+    }
+    .fact-value { font-size: 0.95rem; }
+ 
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .skill-card:hover { border-color: var(--accent); }
+    .skill-card-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      padding: 0.15rem 0.5rem;
+    }
+ 
+    /* ── PROJECTS ── */
+    .projects-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.8rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 1rem;
+      align-items: start;
+      transition: border-color 0.2s;
+    }
+    .project-card:hover { border-color: var(--accent2); }
+    .project-name {
+      font-family: var(--display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .project-desc { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.8rem; }
+    .project-links { display: flex; gap: 0.8rem; }
+    .project-link {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--accent2);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+    }
+    .project-link:hover { color: var(--text); }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: flex-end; }
+ 
+    /* ── CONTACT ── */
+    .contact-inner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3rem;
+      text-align: center;
+    }
+    .contact-inner p { color: var(--muted); margin-bottom: 2rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .contact-link {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+    .contact-link:hover { color: var(--accent); }
+ 
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--border);
+      border-top: 1px solid var(--border);
+    }
+ 
+    /* ── DIVIDER ── */
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 2rem;
+    }
+ 
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .project-card { grid-template-columns: 1fr; }
+      .project-stack { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+ 
+  <nav>
+    <span class="nav-logo">vb.dev</span>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+ 
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">// Software Engineer</p>
+    <h1>Victor<br /><span>Bender.</span></h1>
+    <p class="hero-sub">
+      CS student at Penn State · systems programmer · building things that work.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </section>
+ 
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label">01 / About</p>
+    <h2>Who I Am</h2>
+    <div class="divider"></div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm a Computer Science student at Penn State (class of 2027) with a focus on systems programming and software engineering. I enjoy working close to the metal — operating systems, memory management, and efficient code.
+        </p>
+        <p>
+          Outside of systems work, I build apps and tools that solve real problems for real people — from iOS game trackers actively used in a club setting to full-stack web applications.
+        </p>
+      </div>
+      <div class="about-facts">
+        <div class="fact">
+          <span class="fact-label">Education</span>
+          <span class="fact-value">Penn State — B.S. Computer Science, 2027</span>
+        </div>
+        <div class="fact">
+          <span class="fact-label">GPA</span>
+          <span class="fact-value">3.1</span>
+        </div>
+        <div class="fact">
+          <span class="fact-label">Location</span>
+          <span class="fact-value">State College, PA</span>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label">02 / Skills</p>
+    <h2>What I Work With</h2>
+    <div class="divider"></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-title">Languages</div>
+        <div class="skill-tags">
+          <span class="tag">C</span>
+          <span class="tag">Python</span>
+          <span class="tag">Java</span>
+          <span class="tag">Swift</span>
+          <span class="tag">JavaScript</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Frameworks</div>
+        <div class="skill-tags">
+          <span class="tag">React</span>
+          <span class="tag">SwiftUI</span>
+          <span class="tag">Express</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">Tools & Systems</div>
+        <div class="skill-tags">
+          <span class="tag">Linux</span>
+          <span class="tag">Bash</span>
+          <span class="tag">Git</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-title">CS Concepts</div>
+        <div class="skill-tags">
+          <span class="tag">Systems Programming</span>
+          <span class="tag">OOP</span>
+          <span class="tag">Data Structures</span>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label">03 / Projects</p>
+    <h2>Things I've Built</h2>
+    <div class="divider"></div>
+    <div class="projects-list">
+ 
+      <div class="project-card">
+        <div>
+          <div class="project-name">tableTracker</div>
+          <div class="project-desc">
+            A SwiftUI app for tracking live Warhammer 40,000 and Kill Team matches. Actively used by members of the Penn State Wargaming Club to manage game state, scoring, and match history.
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/vic-bender" class="project-link">→ GitHub</a>
+          </div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Swift</span>
+          <span class="tag">SwiftUI</span>
+          <span class="tag">iOS</span>
+        </div>
+      </div>
+ 
+      <div class="project-card">
+        <div>
+          <div class="project-name">Flashcard App</div>
+          <div class="project-desc">
+            A full-stack flashcard application built to learn React and TypeScript. Monorepo with a React frontend and Express backend.
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/vic-bender" class="project-link">→ GitHub</a>
+          </div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">React</span>
+          <span class="tag">TypeScript</span>
+          <span class="tag">Express</span>
+          <span class="tag">Node</span>
+        </div>
+      </div>
+ 
+      <div class="project-card">
+        <div>
+          <div class="project-name">Course Scheduler</div>
+          <div class="project-desc">
+            Full-stack course scheduling application with admin and student-facing views. Includes backend logic for conflict detection and schedule validation using SQL.
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/vic-bender" class="project-link">→ GitHub</a>
+          </div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">Java</span>
+          <span class="tag">Derby</span>
+          <span class="tag">SQL</span>
+        </div>
+      </div>
+ 
+      <div class="project-card">
+        <div>
+          <div class="project-name">Linux MDADM Re-Implementation</div>
+          <div class="project-desc">
+            Re-implemented core functionality of the Linux mdadm utility in C. Covers RAID array management, disk metadata parsing, array assembly, and fault handling via low-level system calls and binary data structures.
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/vic-bender" class="project-link">→ GitHub</a>
+          </div>
+        </div>
+        <div class="project-stack">
+          <span class="tag">C</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Systems</span>
+        </div>
+      </div>
+ 
+    </div>
+  </section>
+ 
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label">04 / Contact</p>
+    <h2>Get in Touch</h2>
+    <div class="divider"></div>
+    <div class="contact-inner">
+      <p>I'm always open to interesting conversations, internship opportunities, or collaborations.</p>
+      <div class="contact-links">
+        <a href="mailto:vic.bender7@gmail.com" class="contact-link">✉ Email</a>
+        <a href="https://github.com/vic-bender" class="contact-link">⌥ GitHub</a>
+        <a href="https://linkedin.com/in/vic-bender" class="contact-link">↗ LinkedIn</a>
+        <a href="/resume.pdf" class="contact-link">↓ Resume</a>
+      </div>
+    </div>
+  </section>
+ 
+  <footer>
+    <span>built by victor bender · 2025</span>
+  </footer>
+ 
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Fade-in sections on scroll
+    const observer = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+      { threshold: 0.15 }
+    );

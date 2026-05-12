@@ -77,7 +77,6 @@
       transform: translateY(28px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    /* FIX: removed conflicting body.loaded section { opacity: 0 } rule */
     section.visible { opacity: 1; transform: none; }
  
     /* ── HERO ── */
@@ -346,7 +345,7 @@
         </div>
         <div class="fact">
           <span class="fact-label">Current Position</span>
-          <span class="fact-value">N/A</span>
+          <span class="fact-value">Software Engineer Intern, Minitab</span>
         </div>
         <div class="fact">
           <span class="fact-label">Location</span>
@@ -379,6 +378,7 @@
           <span class="tag">SwiftUI</span>
           <span class="tag">Express</span>
           <span class="tag">SQL</span>
+          <span class="tag">pySpark</span>
         </div>
       </div>
       <div class="skill-card">
@@ -387,6 +387,7 @@
           <span class="tag">Linux</span>
           <span class="tag">Bash</span>
           <span class="tag">Git</span>
+          <span class="tag">Apache Spark</span>
         </div>
       </div>
       <div class="skill-card">
@@ -395,6 +396,7 @@
           <span class="tag">Systems Programming</span>
           <span class="tag">OOP</span>
           <span class="tag">Data Structures</span>
+          <span class="tag">Operating Systems</span>
         </div>
       </div>
     </div>
@@ -490,7 +492,6 @@
         <a href="mailto:vic.bender7@gmail.com" class="contact-link">✉ Email</a>
         <a href="https://github.com/vic-bender" class="contact-link">⌥ GitHub</a>
         <a href="https://linkedin.com/in/vic-bender" class="contact-link">↗ LinkedIn</a>
-        <a href="/resume.pdf" class="contact-link">↓ Resume</a>
       </div>
     </div>
   </section>
@@ -500,8 +501,6 @@
   </footer>
  
   <script>
-    // FIX 1: Removed body.loaded section { opacity: 0 } CSS rule that was overriding section.visible
-    // FIX 2: Completed the IntersectionObserver setup — actually observe each section
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.15 }
